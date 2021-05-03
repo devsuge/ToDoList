@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Редактирование записи
+{% endblock %}
+
+{%block header%}
+    <a href="/" class="mr-4">Главная</a><br>
+{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1> Редактирование записи </h1>
+    <form method="post" enctype="multipart/form-data">
+        {%csrf_token%}
+        {{form.non_field.errors}}
+        <input class="form-control" required="" id="{{form.title.auto_id}}" maxlength="20" name="title" onchange="OnChange()"
+               placeholder="Введите название задачи" type="text" value="{{task.title}}"><br>
+
+        <textarea id="{{form.text.auto_id}}" rows="8" name="text" class="form-control" placeholder="Введите текст (необязательно)" >{{task.text}}</textarea><br>
+
+        <div id="dates">
+            <input required="" id="{{form.in_date.auto_id}}"  name="in_date"
+                   onchange="OnChange() Init()" type="date" value="{{task.in_date|date:'Y-m-d'}}"/>
+            <label> - Дата начала </label><br>
+
+            <input id="{{form.out_date.auto_id}}"  name="out_date"
+                   onchange="OnChange()" type="date" value="{{task.out_date|date:'Y-m-d'}}"/>
+            <label> - Дата окончания </label>
+        </div><br>
+
+        <input type="file" name="file_data" id="{{data.out_date.auto_id}}">
+        <input type="submit" name="action" value="Загрузить файл"><br><br>
+        <p>
+           {% if data %}
+                Список файлов: <br>
+            {% else %}
+                Список файлов пуст <br>
+            {% endif %}
+
+               {% for item in data %}
+           <a href="{{item.path.url}}" class="link-dark mr-2">{{ item.get_filename }}</a><a href="{{ item.get_delete_url }}">Удалить</a> <br>
+               {% endfor %}
+        </p>
+
+        <input type="submit" class="btn btn-success" id="btn1" name="action" value="Изменить">
+        <a href="{{ task.get_delete_url }}" class="btn btn-success">Удалить</a>
+        <a href="{{ task.get_absolute_url }}" class="btn btn-success">Отмена</a>
+    </form>
+</div>
+{% endblock %}

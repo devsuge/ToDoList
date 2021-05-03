@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{title}}
+{% endblock %}
+
+{%block header%}
+    <a href="/" class="mr-4">Главная</a><br>
+{% endblock %}
+
+{% block body %}
+
+<div class="container mt-5">
+    <h1> {{title}} </h1>
+    <form method="post" enctype="multipart/form-data">
+        {%csrf_token%}
+        {{form.non_field.errors}}
+        <input class="form-control" id="{{form.title.auto_id}}" maxlength="20" name="title" onchange="OnChange()"
+               placeholder="Введите название задачи" type="text"><br>
+
+        <textarea id="{{form.text.auto_id}}" name="text" class="form-control" placeholder="Введите текст (необязательно)"></textarea><br>
+
+        <div id="dates">
+            <input id="{{form.in_date.auto_id}}"  name="in_date"
+                   onchange="OnChange() Init()" type="date"/>
+            <label> - Дата начала </label><br>
+
+            <input id="{{form.out_date.auto_id}}"  name="out_date"
+                   onchange="OnChange()" type="date"/>
+            <label> - Дата окончания </label>
+        </div><br>
+        {{form.file_data}}
+        <input id="btn1" type="submit" class="btn btn-success" value="Создать">
+        <a class="btn btn-success" href="/">Отмена</a>
+    </form>
+</div>
+{% endblock %}

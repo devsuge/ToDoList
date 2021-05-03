@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ task.title }}
+{% endblock %}
+
+
+{% block body %}
+<div class="container mt-5">
+    <h1> {{ task.title }} </h1>
+
+    <div class ="alert alert-secondary" >
+
+        <b>
+            {{ task.in_date|date:"d.m.y(D)" }} - {{task.out_date|date:"d.m.y(D)"}}
+        </b>
+
+        <hr align="center" size="2" color="#ff0000" />
+
+        <div>
+            numbersapi:
+            <span id="fact"></span><br>
+        </div>
+        <hr align="center" size="2" color="#ff0000" />
+
+        <p>
+            {% if task.text %}
+                {{ task.text }}
+            {% else %}
+                Текст пустой
+            {% endif %}
+        </p>
+
+        <hr align="center" size="2" color="#ff0000" />
+
+       <p>
+            {% if data %}
+                Список файлов: <br>
+            {% else %}
+                Список файлов пуст <br>
+            {% endif %}
+
+            {% for item in data %}
+           <a href="{{item.path.url}}" class="mr-4">{{ item.get_filename }}</a><br>
+            {% endfor %}
+       </p>
+
+        <a href="{{task.get_edit_url}}" class="btn btn-success">Изменить</a>
+        <a href="{{task.get_delete_url}}" class="btn btn-success">Удалить</a>
+        <a href="{% url 'index' %}" class="btn btn-success">Назад</a>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $.get('http://numbersapi.com/{{number}}', function(data) {
+            $('#fact').text(data);
+        });
+    </script>
+
+</div>
+{% endblock %}
